@@ -146,19 +146,12 @@ public class ErodingAndDilating {
                 new Point(kernelSize, kernelSize)
         );
 
-        int threshold = 150;
         Mat grayMat = new Mat();
-        Mat cannyMat = new Mat();
         Imgproc.cvtColor(matImgSrc, grayMat, Imgproc.COLOR_BGR2GRAY);
         Imgproc.blur(grayMat, grayMat, new Size(3, 3));
-//        Imgproc.Canny(grayMat, cannyMat, threshold, threshold * 2);
-        cannyMat = grayMat;
 
-        if (doErosion) Imgproc.erode(cannyMat, matImgDst, element);
-        else Imgproc.dilate(cannyMat, matImgDst, element);
-
-//        Imgproc.dilate(cannyMat, matImgDst, element);
-//        Imgproc.erode(cannyMat, matImgDst, element);
+        if (doErosion) Imgproc.erode(grayMat, matImgDst, element);
+        else Imgproc.dilate(grayMat, matImgDst, element);
 
         Image img = HighGui.toBufferedImage(matImgDst);
         imgLabel.setIcon(new ImageIcon(img));

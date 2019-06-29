@@ -120,6 +120,7 @@ public class MoreMorphologyTransformations {
         pane.add(outerPanel, BorderLayout.PAGE_START);
 
         imgLabel = new JLabel(new ImageIcon(img));
+        imgLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
         imgLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -148,7 +149,11 @@ public class MoreMorphologyTransformations {
                 new Size(2 * kernelSize + 1, 2 * kernelSize + 1),
                 new Point(kernelSize, kernelSize)
         );
-        Imgproc.morphologyEx(matImgSrc, matImgDst, morphOpType, element);
+        Mat grayMat = new Mat();
+        Imgproc.cvtColor(matImgSrc, grayMat, Imgproc.COLOR_BGR2GRAY);
+        Imgproc.blur(grayMat, grayMat, new Size(3, 3));
+
+        Imgproc.morphologyEx(grayMat, matImgDst, morphOpType, element);
         Image img = HighGui.toBufferedImage(matImgDst);
         imgLabel.setIcon(new ImageIcon(img));
         frame.repaint();
